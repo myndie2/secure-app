@@ -1,0 +1,25 @@
+<h1>Connexion</h1>
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <label>
+    Identifiant :
+    <input formControlName="login" />
+  </label>
+
+  <label>
+    Mot de passe :
+    <input formControlName="password" type="password" />
+  </label>
+
+  <button type="submit" [disabled]="form.invalid || auth.isLoading()">
+    Se connecter
+  </button>
+</form>
+
+@if (auth.isLoading()) {
+  <p>Connexion en cours…</p>
+}
+
+@if (auth.error()) {
+  <p style="color: red;">{{ auth.error() }}</p>
+}

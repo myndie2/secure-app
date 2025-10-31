@@ -1,0 +1,11 @@
+<h1>Accueil</h1>
+
+@if (auth.isLoggedIn()) {
+  <p>
+    Connecté : {{ auth.currentUser()?.login }} ({{ auth.currentUser()?.role }})
+  </p>
+} @else {
+  <p>
+    Non connecté — <a routerLink="/login">se connecter</a>
+  </p>
+}

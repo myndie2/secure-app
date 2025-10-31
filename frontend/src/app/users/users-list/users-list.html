@@ -1,0 +1,14 @@
+<h2>Utilisateurs</h2>
+
+@if (isLoading()) { <p>Chargement…</p> }
+@if (error()) { <p style="color:red">{{ error() }}</p> }
+
+@if ((users() ?? []).length === 0) {
+    <p>Pas d'utilisateurs.</p>
+} @else {
+    <ul>
+     @for (u of users(); track u.id) {
+        <li>{{ u.login }} — {{ u.role }}</li>
+    }
+    </ul>
+}
