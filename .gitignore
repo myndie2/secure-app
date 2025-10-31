@@ -1,0 +1,15 @@
+# Node / Angular
+**/node_modules/
+**/dist/
+**/.angular/
+**/tmp/
+**/*.log
+
+# Certificats / secrets (ne pas pousser)
+backend/certs/
+.env
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
