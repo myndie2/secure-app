@@ -13,31 +13,32 @@ import { finalize } from 'rxjs';
   providedIn: 'root'
 })
 export class UserService {
-  private readonly http = inject(HttpClient);
-  // liste réactive d'utilisateurs 
-  readonly users = signal<UserDto[]>([]);
-  readonly isLoading = signal(false);
-  readonly error = signal<string | null>(null);
 
-  // cherche tout les utilisateurs depuis le backend
+  private readonly http = inject(HttpClient);
+
+  private readonly _users = signal<UserDto[]>([]);
+  private readonly _isLoading = signal(false);
+  private readonly _error = signal<string | null>(null);
+
+  readonly users = this._users.asReadonly();
+  readonly isLoading = this._isLoading.asReadonly();
+  readonly error = this._error.asReadonly();
+
   loadAll() {
-    this.isLoading.set(true);
-    this.error.set(null);
+    this._isLoading.set(true);
+    this._error.set(null);
 
     this.http.get<UserDto[]>(`${environment.apiUrl}/users`, { withCredentials: true }) // pour autoriser l'envoie de cookies pour reconnaitre l'itilisateur connecté 
       .pipe(
-        // tap: quand la réponse arrive fait ça...
-        tap(list => this.users.set(list ?? [])),// on prends la liste reçue et on la met dans le signal, si list undefined, tableau vide àa la place
+        tap(list => this._users.set(list ?? [])), // on prends la liste reçue et on la met dans le signal, si list undefined, tableau vide àa la place
         catchError(error => {
           console.error('Erreur lors du chargement des utilisateurs :', error);
-          this.users.set([]);  // vide la liste
-          this.error.set('Impossible de charger les utilisateurs.');
-          return of([]); // // renvoie un observable contenant un tableau vide
+          this._users.set([]);  // vide la liste
+          this._error.set('Impossible de charger les utilisateurs.');
+          return of([]);
         }),
-        finalize(() => this.isLoading.set(false))
-      )  
-      .subscribe(); // lance la requete 
+        finalize(() => this._isLoading.set(false))
+      )
+      .subscribe();
   }
-
 }
-

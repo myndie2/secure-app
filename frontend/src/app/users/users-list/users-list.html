@@ -3,7 +3,7 @@
 @if (isLoading()) { <p>Chargement…</p> }
 @if (error()) { <p style="color:red">{{ error() }}</p> }
 
-@if ((users() ?? []).length === 0) {
+@if (users().length === 0) {
     <p>Pas d'utilisateurs.</p>
 } @else {
     <ul>
